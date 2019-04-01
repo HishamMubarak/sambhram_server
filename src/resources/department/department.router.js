@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getDept, getMany, updateDept, deleteDept } from './department.controller'
+import { addDept, getDept, getMany, updateDept, deleteDept } from './department.controller'
 
 
 const router = Router()
@@ -7,7 +7,7 @@ const router = Router()
 router
     .route('/')
     .get(getMany)
-    // .put(controllers.createOne)
+    .put(addDept)
 
 router
     .route('/:id')

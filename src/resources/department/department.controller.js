@@ -1,6 +1,8 @@
 import { Department } from './department.model'
-import { getOne, updateOne, removeOne } from '../../utils/crud'
+import { createOne, getOne, updateOne, removeOne } from '../../utils/crud'
 import { Types } from 'mongoose'
+
+export const addDept = createOne(Department)
 
 export const getDept =  async (req, res) => {
     try {
