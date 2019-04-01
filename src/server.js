@@ -6,10 +6,13 @@ import cors from 'cors'
 // import { signup, signin, protect } from './utils/auth'
 import { connect } from './utils/db'
 
+import batchRouter from './resources/batch/batch.router'
+import courseRouter from './resources/course/course.router'
+import departmentRouter from './resources/department/department.router'
+import notificationRouter from './resources/notification/notification.router'
+import studentRouter from './resources/student/student.router'
+import subjectRouter from './resources/subject/subject.router'
 import teacherRouter from './resources/teacher/teacher.router'
-// import teacherRouter from './resources/user/user.router'
-// import itemRouter from './resources/item/item.router'
-// import listRouter from './resources/list/list.router'
 
 export const app = express()
 app.disable('x-powered-by')
@@ -21,11 +24,16 @@ app.use(morgan('dev'))
 
 // app.post('/signup', signup)
 // app.post('/signin', signin)
-
 // app.use('/api', protect)
+
+app.use('/api/batch', batchRouter)
+app.use('/api/course', courseRouter)
+app.use('/api/department', departmentRouter)
+app.use('/api/notification', notificationRouter)
+app.use('/api/student', studentRouter)
+app.use('/api/subject', subjectRouter)
 app.use('/api/teacher', teacherRouter)
-// app.use('/api/item', itemRouter)
-// app.use('/api/list', listRouter)
+
 
 export const start = async () => {
   try {
