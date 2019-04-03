@@ -6,12 +6,12 @@ const router = Router()
 router
     .route('/')
     .get(controllers.getOne)
-    .post(controllers.createOne)
+    .put(controllers.createOne)
 
 router
     .route('/:id')
     .get(controllers.getOne)
-    .put(controllers.updateOne)
+    .post(controllers.updateOne)
     .delete(controllers.removeOne)
 
 export default router

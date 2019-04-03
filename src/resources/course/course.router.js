@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { create, getCourses, updateCourse, removeCourse } from './course.controller'
+import { create, getCourse, getCourses, updateCourse, removeCourse } from './course.controller'
 
 const router = Router()
 
@@ -10,7 +10,7 @@ router
 
 router
     .route('/:id')
-    // .get(controllers.getOne)
+    .get(getCourse)
     .post(updateCourse)
     .delete(removeCourse)
 

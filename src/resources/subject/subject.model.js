@@ -3,8 +3,8 @@ const { ObjectId } = mongoose.Types
 
 const SubjectSchema = new mongoose.Schema({
     name: { type:String, required:true },
+    semester: { type:Number, required:true },
     course: { type:ObjectId, required:true, ref:'course' },
-    department: { type:ObjectId, required:true, ref:'department' },
 }, { versionKey:false })
 
 export const Subject = mongoose.model('subject', SubjectSchema, 'subjects')
