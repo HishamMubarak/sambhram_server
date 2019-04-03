@@ -10,6 +10,7 @@ const StudentSchema = new mongoose.Schema({
     mail:{ type:String, required:true },
     address: { type:String, required:true },
     registerNumber: { type:String, required:true },
+    subjectData: { type:Array, required:true, default:[] }
 }, { versionKey:false })
 
 export const Student = mongoose.model('student', StudentSchema, 'students')

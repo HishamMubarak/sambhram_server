@@ -52,5 +52,46 @@ export const getStudents = getMany(Student)
 export const updateStudent = updateOne(Student)
 export const removeStudent = removeOne(Student)
 
+export const updateSubjectData = async (req, res) => {
 
-// export default crudControllers(Student)
+    console.log(req.body)
+
+    try {
+
+        const { firstInternal, secondInternal, attendancePercentage, editingSubjectId } = req.body
+
+        let addData = { subjectId:editingSubjectId, firstInternal, secondInternal, attendancePercentage }
+    
+        const dataAddedStudent = await Student.findOneAndUpdate(
+            {
+                _id:req.params.id,
+                "subjectData":{
+                    $not:{
+                        $elemMatch:{
+                            subjectId:editingSubjectId
+                        }
+                    }
+                }
+            },
+            {
+                $addToSet : {
+                    subjectData:addData
+                }
+            },
+            { new:true })
+
+        if(!dataAddedStudent) {
+            const updatedStudent = await Student.findOneAndUpdate(
+                { _id:req.params.id, "subjectData.subjectId":editingSubjectId },
+                { $set: { "subjectData.$":addData } },
+                { new:true })
+
+            return res.status(200).json(updatedStudent)
+        }
+    
+        return res.status(200).json(dataAddedStudent)
+    } catch (e) {
+        console.log(e)
+        return res.status(500)
+    }
+}

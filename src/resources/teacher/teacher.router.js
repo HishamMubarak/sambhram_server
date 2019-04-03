@@ -1,17 +1,17 @@
 import { Router } from 'express'
-import controllers from './teacher.controller'
+import controllers, { getTeachers } from './teacher.controller'
 
 const router = Router()
 
 router
     .route('/')
-    .get(controllers.getOne)
-    .post(controllers.createOne)
+    .get(getTeachers)
+    .put(controllers.createOne)
 
 router
     .route('/:id')
     .get(controllers.getOne)
-    .put(controllers.updateOne)
+    .post(controllers.updateOne)
     .delete(controllers.removeOne)
 
 export default router
