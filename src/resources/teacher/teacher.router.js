@@ -1,8 +1,11 @@
 import { Router } from 'express'
-import controllers, { getTeachers } from './teacher.controller'
+import controllers, { getTeachers, teacherLogin } from './teacher.controller'
 
 const router = Router()
 
+router
+    .route('/login')
+        .post(teacherLogin)
 router
     .route('/')
     .get(getTeachers)
