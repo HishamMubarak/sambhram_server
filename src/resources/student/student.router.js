@@ -1,7 +1,11 @@
 import { Router } from 'express'
-import { addStudent, getStudent, getStudents, updateStudent, removeStudent, updateSubjectData } from './student.controller'
+import { addStudent, getStudent, getStudents, updateStudent, removeStudent, updateSubjectData, login } from './student.controller'
 
 const router = Router()
+
+router
+    .route('/login')
+    .post(login)
 
 router
     .route('/')

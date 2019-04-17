@@ -4,6 +4,51 @@ import { Types } from 'mongoose'
 
 export const addStudent = createOne(Student)
 
+export const login =  async (req, res) => {
+    if(!req.body.mobile) {
+        return res.status(400).json({ message:"mobile required" })
+    }
+
+    const student = await Student.aggregate([
+        { $match: { mobile:req.body.mobile }},
+        {
+            $lookup: {
+                from: "courses",
+                localField:"course",
+                foreignField:"_id",
+                as:"course"
+            }
+        },
+        { $unwind:"$course" },
+        {
+            $lookup: {
+                from: "departments",
+                localField:"department",
+                foreignField:"_id",
+                as:"department"
+            }
+        },
+        { $unwind:"$department" },
+        {
+            $lookup: {
+                from: "batches",
+                localField:"batch",
+                foreignField:"_id",
+                as:"batch"
+            }
+        },
+        { $unwind:"$batch" },
+    ])
+
+    if(student.length === 0) {
+        return res.status(409).json({ message:"Student not found" })
+    }
+
+    return res.status(200).json(student[0])
+
+}
+
+
 export const getStudent = async (req, res) => {
     if(!req.params.id) {
         return res.status(400).json({ message:"studentId required" })
