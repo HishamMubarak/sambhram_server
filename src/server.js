@@ -21,6 +21,7 @@ app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
+app.use(express.static('public'));
 
 // app.post('/signup', signup)
 // app.post('/signin', signin)
@@ -33,6 +34,16 @@ app.use('/api/notification', notificationRouter)
 app.use('/api/student', studentRouter)
 app.use('/api/subject', subjectRouter)
 app.use('/api/teacher', teacherRouter)
+
+var originsWhitelist = ['http://localhost:3000']; //React Dashboard URL
+var corsOptions = {
+  origin: function (origin, callback) {
+    var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+    callback(null, isWhitelisted);
+  },
+  credentials: true
+}
+app.use(cors(corsOptions));
 
 
 export const start = async () => {

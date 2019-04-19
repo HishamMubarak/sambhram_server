@@ -5,7 +5,7 @@ const router = Router()
 
 router
     .route('/login')
-        .post(teacherLogin)
+    .post(teacherLogin)
 router
     .route('/')
     .get(getTeachers)

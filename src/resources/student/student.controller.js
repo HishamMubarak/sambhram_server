@@ -4,44 +4,44 @@ import { Types } from 'mongoose'
 
 export const addStudent = createOne(Student)
 
-export const login =  async (req, res) => {
-    if(!req.body.mobile) {
-        return res.status(400).json({ message:"mobile required" })
+export const login = async (req, res) => {
+    if (!req.body.mobile) {
+        return res.status(400).json({ message: "mobile required" })
     }
 
     const student = await Student.aggregate([
-        { $match: { mobile:req.body.mobile }},
+        { $match: { mobile: req.body.mobile } },
         {
             $lookup: {
                 from: "courses",
-                localField:"course",
-                foreignField:"_id",
-                as:"course"
+                localField: "course",
+                foreignField: "_id",
+                as: "course"
             }
         },
-        { $unwind:"$course" },
+        { $unwind: "$course" },
         {
             $lookup: {
                 from: "departments",
-                localField:"department",
-                foreignField:"_id",
-                as:"department"
+                localField: "department",
+                foreignField: "_id",
+                as: "department"
             }
         },
-        { $unwind:"$department" },
+        { $unwind: "$department" },
         {
             $lookup: {
                 from: "batches",
-                localField:"batch",
-                foreignField:"_id",
-                as:"batch"
+                localField: "batch",
+                foreignField: "_id",
+                as: "batch"
             }
         },
-        { $unwind:"$batch" },
+        { $unwind: "$batch" },
     ])
 
-    if(student.length === 0) {
-        return res.status(409).json({ message:"Student not found" })
+    if (student.length === 0) {
+        return res.status(409).json({ message: "Student not found" })
     }
 
     return res.status(200).json(student[0])
@@ -50,43 +50,43 @@ export const login =  async (req, res) => {
 
 
 export const getStudent = async (req, res) => {
-    if(!req.params.id) {
-        return res.status(400).json({ message:"studentId required" })
+    if (!req.params.id) {
+        return res.status(400).json({ message: "studentId required" })
     }
 
     const student = await Student.aggregate([
-        { $match: { _id:Types.ObjectId(req.params.id) }},
+        { $match: { _id: Types.ObjectId(req.params.id) } },
         {
             $lookup: {
                 from: "courses",
-                localField:"course",
-                foreignField:"_id",
-                as:"course"
+                localField: "course",
+                foreignField: "_id",
+                as: "course"
             }
         },
-        { $unwind:"$course" },
+        { $unwind: "$course" },
         {
             $lookup: {
                 from: "departments",
-                localField:"department",
-                foreignField:"_id",
-                as:"department"
+                localField: "department",
+                foreignField: "_id",
+                as: "department"
             }
         },
-        { $unwind:"$department" },
+        { $unwind: "$department" },
         {
             $lookup: {
                 from: "batches",
-                localField:"batch",
-                foreignField:"_id",
-                as:"batch"
+                localField: "batch",
+                foreignField: "_id",
+                as: "batch"
             }
         },
-        { $unwind:"$batch" },
+        { $unwind: "$batch" },
     ])
 
-    if(!student) {
-        return res.status(209).json({ message:"Student not found" })
+    if (!student) {
+        return res.status(209).json({ message: "Student not found" })
     }
 
     return res.status(200).json(student[0])
@@ -105,35 +105,35 @@ export const updateSubjectData = async (req, res) => {
 
         const { firstInternal, secondInternal, attendancePercentage, editingSubjectId } = req.body
 
-        let addData = { subjectId:editingSubjectId, firstInternal, secondInternal, attendancePercentage }
-    
+        let addData = { subjectId: editingSubjectId, firstInternal, secondInternal, attendancePercentage }
+
         const dataAddedStudent = await Student.findOneAndUpdate(
             {
-                _id:req.params.id,
-                "subjectData":{
-                    $not:{
-                        $elemMatch:{
-                            subjectId:editingSubjectId
+                _id: req.params.id,
+                "subjectData": {
+                    $not: {
+                        $elemMatch: {
+                            subjectId: editingSubjectId
                         }
                     }
                 }
             },
             {
-                $addToSet : {
-                    subjectData:addData
+                $addToSet: {
+                    subjectData: addData
                 }
             },
-            { new:true })
+            { new: true })
 
-        if(!dataAddedStudent) {
+        if (!dataAddedStudent) {
             const updatedStudent = await Student.findOneAndUpdate(
-                { _id:req.params.id, "subjectData.subjectId":editingSubjectId },
-                { $set: { "subjectData.$":addData } },
-                { new:true })
+                { _id: req.params.id, "subjectData.subjectId": editingSubjectId },
+                { $set: { "subjectData.$": addData } },
+                { new: true })
 
             return res.status(200).json(updatedStudent)
         }
-    
+
         return res.status(200).json(dataAddedStudent)
     } catch (e) {
         console.log(e)

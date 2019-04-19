@@ -20,6 +20,6 @@ router
 
 router
     .route('/:id/updateSubjectData')
-        .post(updateSubjectData)
+    .post(updateSubjectData)
 
 export default router
