@@ -33,7 +33,7 @@ export const getOneBatch = async (req, res) => {
         ])
 
         if (!batchData) {
-            return res.status(400).json({ message: "No batch found with provided batchId" })
+            return res.status(400).json({ message: "No batch found using provided batchId" })
         }
 
         const students = await Student.find({ batch: Types.ObjectId(req.params.id) })
