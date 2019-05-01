@@ -1,14 +1,19 @@
 import { Router } from 'express'
-import { sendNotification, getNotifications } from './notification.controller'
+import { getAll, sendNotification, getNotifications, deleteNotification } from './notification.controller'
 
 const router = Router()
 
 router
     .route('/')
-    .post(sendNotification)
+        .get(getAll)
+        .post(sendNotification)
 
 router
     .route('/get')
     .post(getNotifications)
+
+router
+    .route('/:id')
+        .delete(deleteNotification)
 
 export default router

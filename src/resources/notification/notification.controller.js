@@ -1,5 +1,9 @@
 import { crudControllers } from '../../utils/crud'
 import { Notification } from './notification.model'
+import { getMany, createOne, getOne, updateOne, removeOne } from '../../utils/crud'
+
+export const getAll = getMany(Notification)
+export const deleteNotification = removeOne(Notification)
 
 export const sendNotification = async (req, res) => {
     try {

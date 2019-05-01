@@ -7,7 +7,7 @@ export const addDept = createOne(Department)
 export const getDept =  async (req, res) => {
     try {
         const departments = await Department.aggregate([
-            // { $match:{ _id:Types.ObjectId(req.params.id) }},
+            { $match:{ _id:Types.ObjectId(req.params.id) }},
             {
                 $lookup: {
                     from: "courses",
