@@ -99,8 +99,6 @@ export const removeStudent = removeOne(Student)
 
 export const updateSubjectData = async (req, res) => {
 
-    console.log(req.body)
-
     try {
 
         const { firstInternal, secondInternal, attendancePercentage, editingSubjectId } = req.body
