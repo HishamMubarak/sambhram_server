@@ -23,7 +23,7 @@ export const sendNotification = async (req, res) => {
 
 export const getNotifications = async (req, res) => {
     try {
-        const notifications = await Notification.find(req.body)
+        const notifications = await Notification.find(req.body).sort({ _id:-1 })
         return res.status(200).json(notifications)
     } catch (e) {
         console.log(e)
