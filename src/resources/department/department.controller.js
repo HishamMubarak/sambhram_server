@@ -5,9 +5,16 @@ import { Types } from 'mongoose'
 export const addDept = createOne(Department)
 
 export const getDept =  async (req, res) => {
+    
+    let matchObject = {}
+
+    if(req.query.roleId !== '1') {
+        matchObject = { _id:Types.ObjectId(req.params.id) }
+    }
+
     try {
         const departments = await Department.aggregate([
-            { $match:{ _id:Types.ObjectId(req.params.id) }},
+            { $match:matchObject },
             {
                 $lookup: {
                     from: "courses",
