@@ -3,6 +3,7 @@ import { Notification } from './notification.model'
 import { getMany, createOne, getOne, updateOne, removeOne } from '../../utils/crud'
 
 export const getAll = getMany(Notification)
+
 export const deleteNotification = removeOne(Notification)
 
 export const sendNotification = async (req, res) => {
@@ -23,10 +24,16 @@ export const sendNotification = async (req, res) => {
 
 export const getNotifications = async (req, res) => {
     try {
-        const notifications = await Notification.find(req.body).sort({ _id:-1 })
-        return res.status(200).json(notifications)
+        let matchObject = req.body
+        if (!matchObject.batchId && !matchObject.departmentId) {
+            const notifications = await Notification.find({ batchId: { $exists:false }, departmentId: { $exists:false }})
+            .sort({ _id:-1 })
+            return res.status(200).json(notifications)
+        } else {
+            const notifications = await Notification.find(req.body).sort({ _id:-1 })
+            return res.status(200).json(notifications)
+        }
     } catch (e) {
-        console.log(e)
         return res.status(500).json({ message: "DB Error getting notification" })
     }
 }
